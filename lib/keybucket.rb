@@ -36,4 +36,17 @@ class KeyBucket
     end
   end
 
+  def remove(key)
+    hash_code = hash(key)
+    if @buckets[hash_code]
+      #delete @buckets[hash_code]
+      value = @buckets[hash_code]
+      @buckets.delete(hash_code)
+      #@buckets[hash_code]
+      value
+    else
+      nil
+    end
+  end
+
 end

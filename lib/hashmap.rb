@@ -18,12 +18,14 @@ class HashMap
     @key_bucket.has?(key)
   end
 
+  def remove(key)
+    @key_bucket.remove(key)
+  end
 
 end
 
 hash_map = HashMap.new
 hash_map.set("Game of thrones", "book")
 p hash_map.get("Game of thrones")
-hash_map.set("Game of thrones", "Jon Snow")
-p hash_map.get("Game of thrones")
+p hash_map.remove("Game of thrones")
 p hash_map.has?("Game of thrones")
