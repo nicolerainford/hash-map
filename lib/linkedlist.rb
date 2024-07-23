@@ -3,11 +3,11 @@ require_relative 'node'
 class HashMap
   def initialize
     @length = 0
-    @buckets = Array.new(16)
-    @load_factor = 0.75
+   #@buckets = Array.new(16)
+    #@load_factor = 0.75
     @size = 0
     @head = nil
-    @til = nil
+    @tail = nil
   end
 
   #add pair
@@ -139,4 +139,3 @@ list.append(key3, value3)
 
 list.delete("john")
 list.to_s
-
