@@ -76,6 +76,10 @@ class HashMap
     return count
   end
 
+  def clear
+    @buckets = Array.new(16){ LinkedList.new }
+  end
+
 =begin
   @buckets.each do |bucket|
     current = bucket.head
@@ -88,6 +92,43 @@ class HashMap
   end
 =end
 
+def keys
+  keyArr = []
+  @buckets.each do |bucket|
+    current = bucket.head
+    while current
+      keyArr.push(current.key)
+      current = current.next_node
+    end
+  end
+  #return keyArr
+  keyArr.empty? ? nil : keyArr
+end
+
+def values
+  valueArr = []
+  @buckets.each do |bucket|
+    current = bucket.head
+    while current
+      valueArr.push(current.value)
+      current = current.next_node
+    end
+  end
+  valueArr.empty? ? nil : valueArr
+end
+
+def entries
+  entryArr = []
+  @buckets.each do |bucket|
+    current = bucket.head
+    while current
+      entryArr.push([current.key, current.value])
+      current = current.next_node
+    end
+  end
+  entryArr.empty? ? nil : entryArr
+end
+
   def print
     @buckets.each do |bucket|
       current = bucket.head
@@ -97,6 +138,8 @@ class HashMap
       end
     end
   end
+
+   def capacity = @buckets.size
 
   private
 
@@ -140,10 +183,38 @@ class HashMap
     @buckets = rehash_buckets
   end
 
-  def capacity = @buckets.size
+  #def capacity = @buckets.size
   def load_factor = @size / capacity
 
 end
+
+
+test = HashMap.new
+test.set('apple', 'red')
+test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+p test.capacity
+test.set('moon', 'silver')
+p test.capacity
+
+
+
+
+
+
+
+
+
+=begin
 
 key = 'John'
 value = { 'name' => 'John', 'age' => 33 }
@@ -168,4 +239,6 @@ list.set(key4, value4)
 
 
 p list.length
-#list.print
+
+p list.entries
+=end
