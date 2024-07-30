@@ -1,7 +1,7 @@
 require_relative 'node'
 
 class LinkedList
-attr_accessor :head
+attr_accessor :head, :tail, :size
 
   def initialize
     @length = 0

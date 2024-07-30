@@ -32,8 +32,61 @@ class HashMap
   def get(key)
     index = bucket_index(key)
     if @buckets[index]
-      return @buckets[index]
+      current = @buckets[index].head
+      while current && current.key != key
+        current = current.next_node
+      end
+      return current.value
+    else
+      return nil
+    end
   end
+
+  def has?(key)
+    get(key) != nil
+  end
+
+  def remove(key)
+   index = bucket_index(key)
+    if @buckets[index]
+      current = @buckets[index].head
+      if current.key == key
+        node_to_remove = @buckets[index].head
+        @buckets[index].head = current.next_node
+        return node_to_remove.value
+      end
+     current = current.next_node while current.next_node.key != key
+     node_to_remove = current.next_node
+     current.next_node = node_to_remove.next_node
+     @tail = current if node_to_remove == @tail
+     @size -= 1
+     return node_to_remove.value
+    end
+  end
+
+  def length
+    count = 0
+    @buckets.each do |bucket|
+      current = bucket.head
+      while current
+        count += 1
+        current = current.next_node
+      end
+    end
+    return count
+  end
+
+=begin
+  @buckets.each do |bucket|
+    current = bucket.head
+    while current
+      index = bucket_index(current.key)
+      @collisions += 1 if !rehash_buckets[index].is_empty?
+      rehash_insert.call(index, current)
+      current = current.next_node
+    end
+  end
+=end
 
   def print
     @buckets.each do |bucket|
@@ -76,7 +129,6 @@ class HashMap
     }
 
     @buckets.each do |bucket|
-      #can i do bucket.head??
       current = bucket.head
       while current
         index = bucket_index(current.key)
@@ -93,7 +145,7 @@ class HashMap
 
 end
 
-key = 'john'
+key = 'John'
 value = { 'name' => 'John', 'age' => 33 }
 list = HashMap.new
 list.set(key, value)
@@ -109,12 +161,11 @@ value3 = { 'name' => 'Dany', 'age' => 30 }
 list.set(key3, value3)
 
 
-
-=begin
 key4 = 'Sansa'
 value4 = { 'name' => 'Sansa', 'age' => 19 }
-list.insert_at(key4, value4, 1)
-p list.each
-=end
+list.set(key4, value4)
 
-list.print
+
+
+p list.length
+#list.print
