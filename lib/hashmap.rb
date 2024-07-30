@@ -2,11 +2,13 @@ require_relative 'node'
 require_relative 'linkedlist'
 
 class HashMap
+  attr_accessor :capacity
+
   def initialize
-    @buckets = Array.new(16){ LinkedList.new }
+    @capacity = 12
+    @buckets = Array.new(@capacity){ LinkedList.new }
     @size = 0
     @collisions = 0
-    @capacity = 16
   end
 
   MAX_LOAD_FACTOR = 0.75
@@ -18,15 +20,15 @@ class HashMap
   def set(key, value)
     index = bucket_index(key)
     #find way to get the size of each linkedlist as its not an array
-    #if @buckets[index].size >= @buckets.length() * MAX_LOAD_FACTOR
-    if @collisions >= @buckets.length() * MAX_LOAD_FACTOR
+    #if @collisions >= @buckets.length() * MAX_LOAD_FACTOR
+    if load_factor >= @capacity * MAX_LOAD_FACTOR
       rehash
-      set(key, value)
-    else
-      @collisions += 1 if !@buckets[index].is_empty?
-      @buckets[index].append(key, value)
-      @size += 1
+      #set(key, value)
+      index = bucket_index(key)
     end
+    @collisions += 1 if !@buckets[index].is_empty?
+    @buckets[index].append(key, value)
+    @size += 1
   end
 
   def get(key)
@@ -157,18 +159,20 @@ end
   end
 
   def bucket_index(key)
-    index = hash(key) % capacity
-    raise ArgumentError if index.negative? || index >= capacity
+    index = hash(key) % @capacity
+    raise ArgumentError if index.negative? || index >= @capacity
     index
   end
 
   def rehash
-    @capacity *= 2
+    @capacity *=2
+    load_factor
     @collisions = 0
     rehash_buckets = Array.new(@capacity) {LinkedList.new}
+    #p "rehash bucket #{rehash_buckets.length}"
     #lambda function
     rehash_insert = -> (index, current) {
-      rehash_buckets[index].set(current.key, current.value)
+      rehash_buckets[index].append(current.key, current.value)
     }
 
     @buckets.each do |bucket|
@@ -183,8 +187,9 @@ end
     @buckets = rehash_buckets
   end
 
-  #def capacity = @buckets.size
-  def load_factor = @size / capacity
+  #def capacity = @buckets.length
+  #def load_factor = @capacity / MAX_LOAD_FACTOR
+  def load_factor = length * MAX_LOAD_FACTOR
 
 end
 
@@ -204,7 +209,7 @@ test.set('kite', 'pink')
 test.set('lion', 'golden')
 p test.capacity
 test.set('moon', 'silver')
-p test.capacity
+test.print
 
 
 
