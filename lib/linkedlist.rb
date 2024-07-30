@@ -1,6 +1,8 @@
 require_relative 'node'
 
-class HashMap
+class LinkedList
+attr_accessor :head
+
   def initialize
     @length = 0
     # @buckets = Array.new(16)
@@ -157,7 +159,7 @@ class HashMap
   end
 
   def is_empty?
-    @head.nil
+    @head.nil?
   end
 
   def contains?(key)
@@ -173,7 +175,7 @@ class HashMap
     false
   end
 
-  def get_size
+  def size
     current = @head
     count = 0
     while current
@@ -213,22 +215,3 @@ class HashMap
 
 
 end
-
-key = 'john'
-value = { 'name' => 'John', 'age' => 33 }
-list = HashMap.new
-list.append(key, value)
-
-key2 = 'Sam'
-value2 = { 'name' => 'Sam', 'age' => 20 }
-list.append(key2, value2)
-# list.to_s
-
-key3 = 'Dany'
-value3 = { 'name' => 'Dany', 'age' => 30 }
-list.append(key3, value3)
-
-key4 = 'Sansa'
-value4 = { 'name' => 'Sansa', 'age' => 19 }
-list.insert_at(key4, value4, 1)
-p list.each
