@@ -13,7 +13,7 @@ class HashMap
 
   MAX_LOAD_FACTOR = 0.75
 
-  def is_empty
+  def is_empty?
     @size == 0
   end
 
@@ -124,8 +124,13 @@ def entries
   @buckets.each do |bucket|
     current = bucket.head
     while current
-      entryArr.push([current.key, current.value])
-      current = current.next_node
+      if current.value == true
+        entryArr.push([current.key])
+        current = current.next_node
+      else
+       entryArr.push([current.key, current.value])
+       current = current.next_node
+      end
     end
   end
   entryArr.empty? ? nil : entryArr
@@ -135,13 +140,18 @@ end
     @buckets.each do |bucket|
       current = bucket.head
       while current
-        puts "key: #{current.key}, value: #{current.value}"
-        current = current.next_node
+        if current.value == true
+          puts "#{current.key}"
+          current = current.next_node
+        else
+         puts "key: #{current.key}, value: #{current.value}"
+         current = current.next_node
+        end
       end
     end
   end
 
-   def capacity = @buckets.size
+  def capacity = @buckets.size
 
   private
 
@@ -193,7 +203,7 @@ end
 
 end
 
-
+=begin
 test = HashMap.new
 test.set('apple', 'red')
 test.set('banana', 'yellow')
@@ -210,7 +220,7 @@ test.set('lion', 'golden')
 p test.capacity
 test.set('moon', 'silver')
 test.print
-
+=end
 
 
 

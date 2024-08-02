@@ -13,7 +13,7 @@ attr_accessor :head, :tail, :size
   end
 
   # add pair
-  def append(key, value)
+  def append(key, value=nil)
     new_node = Node.new(key, value)
 
     if !@head
